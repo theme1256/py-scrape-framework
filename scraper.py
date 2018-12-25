@@ -25,11 +25,8 @@ class Scraper():
 		if self.verbose and self.debug:
 			print(m)
 
-	# The methoad that one should use when using this class
-	def find(self, url, elem):
-		# Load the file
-		soup = self.load(url)
-
+	# Method used to parse the HTML and return one or more elements that matches the query
+	def parse(self, soup, elem):
 		# parse "elem" into an element, an id and a list of classes
 		elm_classes = elem.split(".")
 		tmp = elm_classes[0].split("#")
@@ -48,11 +45,25 @@ class Scraper():
 		elms = soup.select(elem)
 		elms_count = len(elms)
 		self.out("Found {} elements matching that query:".format(elms_count))
-		self.out(elms)
 		if elms_count == 1:
 			return elms[0]
 		else:
 			return elms
+
+	# The methoad that one should use when using this class
+	def find(self, url, elem):
+		# Load the file
+		soup = self.load(url)
+
+		if ">" in elem:
+			levels = elem.split(">")
+			prev = soup
+			for item in levels:
+				prev = self.parse(prev, item)
+			self.out(prev)
+		else:
+			out = self.parse(soup, elem)
+			self.out(out)
 
 	# Used to fetch the content of a site
 	def load(self, url):
