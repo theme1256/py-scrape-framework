@@ -55,6 +55,11 @@ class Scraper():
 		# Load the file
 		soup = self.load(url)
 
+		if soup is None:
+			return None
+		elif hasattr(soup, status_code):
+			return soup
+
 		if ">" in elem:
 			levels = elem.split(">")
 			prev = soup
@@ -74,7 +79,7 @@ class Scraper():
 						raw_html = resp.content
 					else:
 						self.out('Error during requests to {}, responded with: {}'.format(url, resp.status_code), True)
-						return None
+						return resp
 
 			except RequestException as e:
 				self.out('Error during requests to {} : {}'.format(url, str(e)), True)
