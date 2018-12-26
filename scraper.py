@@ -66,9 +66,11 @@ class Scraper():
 			for item in levels:
 				prev = self.parse(prev, item)
 			self.out(prev)
+			return prev
 		else:
 			out = self.parse(soup, elem)
 			self.out(out)
+			return out
 
 	# Used to fetch the content of a site
 	def load(self, url):
