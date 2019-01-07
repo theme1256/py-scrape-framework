@@ -45,6 +45,8 @@ class Scraper():
 		elms = soup.select(elem)
 		elms_count = len(elms)
 		self.out("Found {} elements matching that query:".format(elms_count))
+		if elms_count == 0:
+			return False
 		if elms_count == 1:
 			return elms[0]
 		else:

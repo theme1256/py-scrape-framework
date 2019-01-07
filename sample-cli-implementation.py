@@ -34,9 +34,11 @@ if __name__ == '__main__':
 	reply = Scraper.find(url, element)
 
 	# Handle data from Scraper
-	if reply is None:
+	if reply is False:
+		print(json.dumps({"error": True, "reason": "Not found", "msg": "The requested element wasn't found"}))
+	elif reply is None:
 		print(json.dumps({"error": True, "reason": "Communication error", "msg": "RequestException thrown"}))
-	elif hasattr(soup, status_code):
+	elif hasattr(reply, status_code):
 		print(json.dumps({"error": True, "reason": "{} status returned".format(reply.status_code), "msg": "Server replied with status code {}".format(reply.status_code)}))
 	else:
 		print(json.dumps({"error": False, "reason": "object found", "data": reply}))
